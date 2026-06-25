@@ -23,6 +23,32 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "entrant",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "test",
+				"outputs": [
+					{
+						"internalType": "bytes8",
+						"name": "",
+						"type": "bytes8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -38,7 +64,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"src/gatekeepertwo.sol": "IGateKeeper"
+			"src/gatekeepertwo.sol": "GatekeeperTwo"
 		},
 		"evmVersion": "osaka",
 		"libraries": {},
